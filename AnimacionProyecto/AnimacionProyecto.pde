@@ -51,32 +51,37 @@ void draw()
   
   recibido = puerto.readStringUntil('\n');
   
-  if(recibido != null)
-  {
-      recibido = recibido.replace("\n", "").replace("\r", "").replace(" ","");
-    switch(recibido.charAt(0))
+  try{
+    if(recibido != null)
     {
-      case 'T':
-        valores[0] = Integer.parseInt(recibido.substring(1,recibido.length()));
-        println(valores[0] + " T");
-      break;
-      
-      case 'L':
-        valores[1] = Integer.parseInt(recibido.substring(1,recibido.length()));
-        println(valores[1] + " L");
-      break;
-      
-      case 'H':
-        valores[2] = Integer.parseInt(recibido.substring(1,recibido.length()));
-        println(valores[2]+ " H");
-      break;
-      
-      default:
-      recibido = null;
-      break;
+        recibido = recibido.replace("\n", "").replace("\r", "").replace(" ","");
+      switch(recibido.charAt(0))
+      {
+        case 'T':
+          valores[0] = Integer.parseInt(recibido.substring(1,recibido.length()));
+          println(valores[0] + " T");
+        break;
+        
+        case 'L':
+          valores[1] = Integer.parseInt(recibido.substring(1,recibido.length()));
+          println(valores[1] + " L");
+        break;
+        
+        case 'H':
+          valores[2] = Integer.parseInt(recibido.substring(1,recibido.length()));
+          println(valores[2]+ " H");
+        break;
+        
+        default:
+        recibido = null;
+        break;
+      }
     }
   }
-  
+  catch(NumberFormatException e)
+  {
+    println("Formato erroneo recibido");
+  }
   //MAPEO DE LOS VALORES OBTENIDOS DEL PUERTO SERIE PARA LA ANIMACION
   char tono = (char)map(valores[1], 0, 1023, 50, 255);
   char fog = (char)map(valores[2], 0, 1023, 0, 255);
