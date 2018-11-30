@@ -1,3 +1,5 @@
+//Clase persona para la animación que representa al sensor de temperatura
+
 class Persona{
   int posX;
   int shake;
@@ -5,7 +7,7 @@ class Persona{
   PImage[] sprites;
   boolean flag;
   
-  public Persona(PImage[] imagenes)
+  public Persona(PImage[] imagenes) //constructor
   {
     sprites = imagenes;
     shake = 3;
@@ -13,7 +15,8 @@ class Persona{
     posX = 0;
   }
   
-  void mostrar(int temp){
+  void mostrar(int temp)           ////Realiza el intercambio de imagenes según el valor recibido
+  { 
     if(temp < 15)
     {
       image(sprites[0], posX, 0);

@@ -1,20 +1,25 @@
 import processing.serial.*;
 
+//Declaración de variables para el manejo de los datos del puerto serial
 Serial puerto;
 String recibido = null;
 int valores[] = new int[3];
 
+//Variables para el manejo de imagenes
 PImage sprites[] = new PImage[5];
 PImage mov[] = new PImage[4];
 
-
+//Variables auxiliares para la animación
 int pos;
 int opac;
 
+//Variables para los datos recibidos desde los sensores
 float temperatura, luz, humedad;
 
+//Objetos auxiliares para la animación
 Fog niebla;
 Persona hombre;
+
 
 void setup()
 {
@@ -49,25 +54,27 @@ void draw()
 {
   //OBTENER DATOS DEL PUERTO SERIE
   
-  recibido = puerto.readStringUntil('\n');
+  recibido = puerto.readStringUntil('\n');  //Leer el buffer hasta el proximo salto de linea
   
   try{
     if(recibido != null)
     {
-        recibido = recibido.replace("\n", "").replace("\r", "").replace(" ","");
-      switch(recibido.charAt(0))
+        recibido = recibido.replace("\n", "").replace("\r", "").replace(" ","");  //Limpiar caracteres no deseados de la cadena recibida
+      
+	  
+	  switch(recibido.charAt(0)) //Verifica el primer caracter de la cadena recibida, este indica el sensor al que pertenece el dato
       {
-        case 'T':
-          valores[0] = Integer.parseInt(recibido.substring(1,recibido.length()));
+        case 'T': //Sensor de temperatura
+          valores[0] = Integer.parseInt(recibido.substring(1,recibido.length())); //Convertir la cadena en un entero
           println(valores[0] + " T");
         break;
         
-        case 'L':
+        case 'L'://Detector de luz
           valores[1] = Integer.parseInt(recibido.substring(1,recibido.length()));
           println(valores[1] + " L");
         break;
         
-        case 'H':
+        case 'H'://Sensor de humedad
           valores[2] = Integer.parseInt(recibido.substring(1,recibido.length()));
           println(valores[2]+ " H");
         break;
@@ -82,6 +89,7 @@ void draw()
   {
     println("Formato erroneo recibido");
   }
+  
   //MAPEO DE LOS VALORES OBTENIDOS DEL PUERTO SERIE PARA LA ANIMACION
   char tono = (char)map(valores[1], 0, 1023, 50, 255);
   char fog = (char)map(valores[2], 0, 1023, 0, 255);
